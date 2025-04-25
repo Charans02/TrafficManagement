@@ -36,3 +36,22 @@ This project simulates a **Smart City Traffic Management System** using a **Rasp
 Install these using pip:
 ```bash
 pip install flask
+
+## ⚙️ Setup and Configuration
+
+1. Install Raspberry Pi OS
+2. Update and Install Dependencies
+```bash
+sudo apt update && sudo apt upgrade
+sudo apt install python3-pip
+pip3 install flask
+3.Connect the Hardware
+4.Run the Flask Application
+```bash
+python3 smart_city.py
+5.Access the Web Interface Open a browser and visit:
+```cpp
+http://<Raspberry_Pi_IP>:5000
+
+##🤝 Contribution
+Feel free to fork the repository and submit pull requests to enhance the simulation – such as integrating real-time traffic APIs, data analytics, or AI-based optimization!
