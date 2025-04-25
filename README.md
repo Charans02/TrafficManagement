@@ -37,6 +37,8 @@ Install these using pip:
 ```bash
 pip install flask
 
+---
+
 ## ⚙️ Setup and Configuration
 
 1. Install Raspberry Pi OS
@@ -52,6 +54,8 @@ python3 smart_city.py
 5.Access the Web Interface Open a browser and visit:
 ```cpp
 http://<Raspberry_Pi_IP>:5000
+
+---
 
 ##🤝 Contribution
 Feel free to fork the repository and submit pull requests to enhance the simulation – such as integrating real-time traffic APIs, data analytics, or AI-based optimization!
