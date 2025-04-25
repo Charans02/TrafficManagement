@@ -39,7 +39,7 @@ pip install flask
 
 ---
 
-## ⚙️ Setup and Configuration
+**## ⚙️ Setup and Configuration**
 
 1. Install Raspberry Pi OS
 2. Update and Install Dependencies
@@ -57,5 +57,5 @@ http://<Raspberry_Pi_IP>:5000
 
 ---
 
-##🤝 Contribution
+**##🤝 Contribution**
 Feel free to fork the repository and submit pull requests to enhance the simulation – such as integrating real-time traffic APIs, data analytics, or AI-based optimization!
