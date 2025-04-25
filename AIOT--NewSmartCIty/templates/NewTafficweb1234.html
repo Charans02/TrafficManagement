@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Management System</title>
+    <style>
+        /* Overall page styling */
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #ff6347, #3cb371, #ffcc00);
+            font-family: 'Arial', sans-serif;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 40px;
+            color: white;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .signal-row {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .signal-container-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .signal-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Traffic light container */
+        .traffic-light {
+            width: 100px;
+            height: 300px;
+            background: #222;
+            margin: 20px auto;
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        /* Individual lights */
+        .light {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            border-radius: 50%;
+            background: #555;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+
+        /* Active light states */
+        .red.active {
+            background: red;
+            box-shadow: 0 0 15px red;
+        }
+
+        .yellow.active {
+            background: yellow;
+            box-shadow: 0 0 15px yellow;
+        }
+
+        .green.active {
+            background: green;
+            box-shadow: 0 0 15px green;
+        }
+
+        .countdown {
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+            margin-top: 15px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Traffic Management System</h1>
+
+    <div class="signal-row">
+        <!-- Traffic signal containers for each variable (A, B, C, D) -->
+        <div class="signal-container-wrapper">
+            <div class="signal-name">A</div>
+            <div id="signalA" class="traffic-light">
+                <div id="lightARed" class="light red"></div>
+                <div id="lightAYellow" class="light yellow"></div>
+                <div id="lightAGreen" class="light green"></div>
+                <div id="countdownA" class="countdown">0</div>
+            </div>
+        </div>
+
+        <div class="signal-container-wrapper">
+            <div class="signal-name">B</div>
+            <div id="signalB" class="traffic-light">
+                <div id="lightBRed" class="light red"></div>
+                <div id="lightBYellow" class="light yellow"></div>
+                <div id="lightBGreen" class="light green"></div>
+                <div id="countdownB" class="countdown">0</div>
+            </div>
+        </div>
+
+        <div class="signal-container-wrapper">
+            <div class="signal-name">C</div>
+            <div id="signalC" class="traffic-light">
+                <div id="lightCRed" class="light red"></div>
+                <div id="lightCYellow" class="light yellow"></div>
+                <div id="lightCGreen" class="light green"></div>
+                <div id="countdownC" class="countdown">0</div>
+            </div>
+        </div>
+
+        <div class="signal-container-wrapper">
+            <div class="signal-name">D</div>
+            <div id="signalD" class="traffic-light">
+                <div id="lightDRed" class="light red"></div>
+                <div id="lightDYellow" class="light yellow"></div>
+                <div id="lightDGreen" class="light green"></div>
+                <div id="countdownD" class="countdown">0</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateTrafficData() {
+            fetch('/data')
+                .then(response => response.json())
+                .then(data => {
+                    updateSignal('A', data.A);
+                    updateSignal('B', data.B);
+                    updateSignal('C', data.C);
+                    updateSignal('D', data.D);
+                });
+        }
+
+        function updateSignal(signal, data) {
+            const lightRed = document.getElementById('light' + signal + 'Red');
+            const lightYellow = document.getElementById('light' + signal + 'Yellow');
+            const lightGreen = document.getElementById('light' + signal + 'Green');
+            const countdownElement = document.getElementById('countdown' + signal);
+
+            // Remove 'active' class from all lights
+            lightRed.classList.remove('active');
+            lightYellow.classList.remove('active');
+            lightGreen.classList.remove('active');
+
+            // Show the appropriate light based on the signal state
+            if (data.light === 'red') {
+                lightRed.classList.add('active');
+            } else if (data.light === 'yellow') {
+                lightYellow.classList.add('active');
+            } else if (data.light === 'green') {
+                lightGreen.classList.add('active');
+            }
+
+            // Update countdown
+            countdownElement.textContent = data.time;
+        }
+
+        setInterval(updateTrafficData, 1000); // Update every second
+    </script>
+
+</body>
+</html>

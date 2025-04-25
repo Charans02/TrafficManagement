@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Management System</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            color: #ffffff;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+            background: #b3e5fc; /* Light blue background color */
+        }
+
+        /* Wave Containers */
+        .wave {
+            position: absolute;
+            width: 200%;
+            height: 30%;
+            top: 70%;
+            background: rgba(0, 150, 255, 0.5);
+            animation: wave-animation 5s infinite linear;
+            transform: translateX(-50%);
+        }
+
+        .wave:nth-child(2) {
+            top: 72%;
+            background: rgba(0, 150, 255, 0.3);
+            animation-duration: 7s;
+        }
+
+        .wave:nth-child(3) {
+            top: 74%;
+            background: rgba(0, 150, 255, 0.2);
+            animation-duration: 9s;
+        }
+
+        /* Create wave shape */
+        .wave::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            width: 200%;
+            height: 100%;
+            background: inherit;
+            clip-path: polygon(0 50%, 25% 60%, 50% 50%, 75% 40%, 100% 50%, 100% 100%, 0 100%);
+        }
+
+        @keyframes wave-animation {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .dashboard {
+            position: relative;
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 300px;
+        }
+
+        .dashboard p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .dashboard span {
+            font-weight: bold;
+            font-size: 22px;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 16px;
+            color: white;
+        }
+
+        .status.ok {
+            background-color: #4CAF50;
+        }
+
+        .status.error {
+            background-color: #F44336;
+        }
+
+        .status.loading {
+            background-color: #FF9800;
+        }
+
+        #clock {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+    </style>
+    <script>
+        function updateStatus() {
+            fetch("/status")
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("distance").innerText = data.distance + " cm";
+                    document.getElementById("motorStatus").innerText = data.motor_status;
+
+                    const motorStatusElement = document.getElementById("motorStatus");
+                    if (data.motor_status === "Running") {
+                        motorStatusElement.classList.remove("error", "loading");
+                        motorStatusElement.classList.add("ok");
+                    } else if (data.motor_status === "Stopped") {
+                        motorStatusElement.classList.remove("ok", "loading");
+                        motorStatusElement.classList.add("error");
+                    } else {
+                        motorStatusElement.classList.remove("ok", "error");
+                        motorStatusElement.classList.add("loading");
+                    }
+                });
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            document.getElementById("clock").innerText = `Current Time: ${timeString}`;
+        }
+
+        setInterval(updateStatus, 1000); // Update every second
+        setInterval(updateClock, 1000); // Update clock every second
+    </script>
+</head>
+<body>
+    <!-- Waves for Animation -->
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+
+    <div class="dashboard">
+        <h1>Water Management System</h1>
+        <div id="clock">Loading time...</div>
+        <p><strong>Distance:</strong> <span id="distance">Loading...</span></p>
+        <p><strong>Motor Status:</strong> <span id="motorStatus" class="status loading">Loading...</span></p>
+    </div>
+</body>
+</html>
